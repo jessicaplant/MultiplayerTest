@@ -18,16 +18,24 @@ public class SpawnManager : MonoBehaviour
         {
             Transform sp = spawnPoints[nextSpawnIndex % spawnPoints.Length];
 
-            // get CharacterController height to offset the feet
             var cc = player.GetComponent<CharacterController>();
-            float yOffset = (cc != null) ? cc.height / 2f : 1f;
+            bool wasEnabled = false;
+            if (cc != null)
+            {
+                wasEnabled = cc.enabled;
+                cc.enabled = false; // prevent the capsule from resolving collisions mid-teleport
+            }
 
-            // apply spawn pos + offset
-            Vector3 spawnPos = sp.position + Vector3.up * yOffset;
-            player.transform.position = spawnPos;
-            player.transform.rotation = sp.rotation;
+            Vector3 spawnPos = sp.position;
+            player.transform.SetPositionAndRotation(spawnPos, sp.rotation);
 
-            Debug.Log($"Spawned player {player.playerIndex} at {spawnPos} (offset {yOffset})");
+            if (cc != null)
+            {
+                Physics.SyncTransforms();
+                cc.enabled = wasEnabled;
+            }
+
+            Debug.Log($"Spawned player {player.playerIndex} at {spawnPos})");
 
             nextSpawnIndex++;
         }
