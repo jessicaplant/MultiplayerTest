@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 8
-  jumpHeight: 1.5
+  jumpHeight: 20
   gravity: -20
   lookSensitivity: 2
   playerCamera: {fileID: 0}
